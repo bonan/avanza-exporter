@@ -12,7 +12,6 @@ module.exports = function(username, password, callback) {
         avanza.getOverview().then(overview => {
             if (overview) {
                 az_overview = overview;
-                console.log(overview);
             }
         }, err => {
             console.log(err);
@@ -71,9 +70,11 @@ module.exports = function(username, password, callback) {
             if (!az_instruments[id]) continue;
             var stock = az_instruments[id];
 
-            metrics[stock.ticker] = {
+            metrics[pos.accountId + "-" + id] = {
                 name: stock.name,
                 type: stock.marketPlace == 'Fondmarknaden' ? 'fund' : 'stock',
+                code: stock.ticker,
+                account: pos.accountId,
                 amount: pos.volume,
                 value: pos.value,
                 rate: pos.value/pos.volume

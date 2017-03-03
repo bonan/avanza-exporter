@@ -10,14 +10,17 @@ app.get('/metrics', function (req, res) {
     for (var code in metrics) {
         if (!metrics.hasOwnProperty(code)) continue;
 
-        var opt = 'exchange="avanza",code="'+code+'",name="'+metrics[code].name+'"';
+        var opt = 'exchange="avanza",code="'+metrics[code].code+'",name="'+metrics[code].name+'"';
         if (metrics[code].type) {
             opt = opt + ',type="'+metrics[code].type+'"';
+        }
+        if (metrics[code].account) {
+            opt = opt + ',account="'+metrics[code].account+'"';
         }
 
         for (var type in metrics[code]) {
             if (!metrics[code].hasOwnProperty(type)) continue;
-            if (type == "name" || type == "type") continue;
+            if (type == "name" || type == "type" || type == "account" || type == "code") continue;
             var name = 'stock_'+type;
             ret = ret + name + "{" + opt + "} " + metrics[code][type] + "\n";
         }
